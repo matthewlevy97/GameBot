@@ -1,0 +1,6 @@
+pygetwindow
+pyautogui
+pillow
+mss
+opencv-python
+tk

@@ -1,0 +1,5 @@
+ultralytics
+opencv-python-headless
+numpy
+
+-r yolov5/requirements.txt

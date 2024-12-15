@@ -1,0 +1,6 @@
+<classes>
+    <class name="ore" color="#ff5733" />
+    <class name="rock" color="#33ff57" />
+    <class name="character" color="#3357ff" />
+    <class name="tree" /> <!-- No color provided; will generate a random color -->
+</classes>
