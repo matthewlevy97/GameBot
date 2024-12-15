@@ -10,6 +10,7 @@ class YoloLabelingTool:
     def __init__(self, root):
         self.root = root
         self.root.title("YOLO Labeling Tool")
+        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
 
         # Initialize variables
         self.image_dir = None
@@ -47,7 +48,6 @@ class YoloLabelingTool:
 
         # Load classes and colors from XML
         self.load_classes_from_xml(os.path.join(self.output_dir, "classes.xml"))
-        print(self.classes)
         self.selected_class.set(self.classes[0] if self.classes else "")
 
         self.class_selector = ttk.Combobox(root, values=self.classes, textvariable=self.selected_class, state="readonly")
@@ -86,7 +86,7 @@ class YoloLabelingTool:
         self.set_status(f"Loaded {len(self.classes)} classes from XML.")
 
     def load_images(self):
-        self.image_dir = filedialog.askdirectory(title="Select Image Directory", initialdir=os.getcwd())
+        self.image_dir = self.output_dir.parent.joinpath("images")
         if self.image_dir:
             self.image_list = [os.path.join(self.image_dir, f) for f in os.listdir(self.image_dir) if f.endswith(('.png', '.jpg', '.jpeg'))]
             self.image_list.sort()  # Ensure consistent order
@@ -131,6 +131,10 @@ class YoloLabelingTool:
                 color = self.class_colors.get(class_name, "red")
                 self.canvas.create_rectangle(x, y, x + w, y + h, outline=color, width=2)
                 self.canvas.create_text(x + 5, y + 5, anchor="nw", text=class_name, fill=color, font=("Arial", 10, "bold"))
+
+    def on_close(self):
+        self.save_annotations()
+        self.root.destroy()
 
     def on_mouse_down(self, event):
         self.drawing = True
